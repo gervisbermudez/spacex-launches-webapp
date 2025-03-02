@@ -1,36 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "@/assets/images/Logo";
 import SearchIcon from "@/assets/images/SearchIcon";
 import Tabs from "@/components/Tabs/Tabs";
 import LaunchCard from "@/components/LaunchCard/LaunchCard";
+import Paginator from "@/components/Paginator/Paginator";
+import { useLaunches } from "@/context/LaunchesContext";
+import { fetchLaunches } from "@/utils/fetchLaunches";
 
 export default function Home() {
-  const launches = [
-    {
-      title: "FalconSat",
-      description: "First orbital class rocket capable of reflight",
-      date: "2023-10-01",
-      imageUrl:
-        "https://images.unsplash.com/photo-1517976487492-5750f3195933?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isFavorite: false,
-    },
-    {
-      title: "FalconSat",
-      description: "First orbital class rocket capable of reflight",
-      date: "2023-10-01",
-      imageUrl:
-        "https://images.unsplash.com/photo-1517976487492-5750f3195933?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isFavorite: true,
-    },
-    {
-      title: "FalconSat",
-      description: "First orbital class rocket capable of reflight",
-      date: "2023-10-01",
-      imageUrl:
-        "https://images.unsplash.com/photo-1517976487492-5750f3195933?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isFavorite: false,
-    },
-  ];
+  const { launches, currentPage, setCurrentPage, totalPages } = useLaunches();
+
   return (
     <>
       <header className="bg-black h-[206px] bg-app-gradient">
@@ -63,17 +42,15 @@ export default function Home() {
         </div>
         <section className="container mx-auto">
           <div className="launches-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-            {launches.map((launch, index) => (
-              <LaunchCard
-                key={index}
-                title={launch.title}
-                description={launch.description}
-                date={launch.date}
-                imageUrl={launch.imageUrl}
-                isFavorite={launch.isFavorite}
-              />
+            {launches.map((launch) => (
+              <LaunchCard key={launch.flight_number} launch={launch} />
             ))}
           </div>
+          <Paginator
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </section>
       </main>
     </>

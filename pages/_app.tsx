@@ -1,3 +1,5 @@
+import React from "react";
+import { LaunchesProvider } from "@/context/LaunchesContext";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import localFont from "@next/font/local";
@@ -21,8 +23,10 @@ const dDinFont = localFont({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={dDinFont.className}>
-      <Component {...pageProps} />
-    </div>
+    <LaunchesProvider>
+      <div className={dDinFont.className}>
+        <Component {...pageProps} />
+      </div>
+    </LaunchesProvider>
   );
 }
