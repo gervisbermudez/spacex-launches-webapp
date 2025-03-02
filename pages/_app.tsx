@@ -7,12 +7,12 @@ import localFont from "@next/font/local";
 const dDinFont = localFont({
   src: [
     {
-      path: "../assets/d-din/D-DIN.woff2",
+      path: "../assets/fonts/d-din/D-DIN.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../assets/d-din/D-DIN-Bold.woff2",
+      path: "../assets/fonts/d-din/D-DIN-Bold.woff2",
       weight: "600",
       style: "normal",
     },

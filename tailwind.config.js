@@ -26,7 +26,11 @@ module.exports = {
         300: "rgba(75, 75, 75, 1)",
       },
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "app-gradient": "linear-gradient(180deg, #121212 64.11%, #1E1E1E 100%)",
+      },
+    },
+    plugins: [],
   },
-  plugins: [],
 };
