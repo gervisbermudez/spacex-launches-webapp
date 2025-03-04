@@ -7,7 +7,6 @@ import Paginator from "@/components/Paginator/Paginator";
 
 export default function Home() {
   const {
-    paginatedLaunches,
     currentPage,
     setCurrentPage,
     totalPages,
@@ -18,25 +17,31 @@ export default function Home() {
     launches,
   } = useLaunches();
   const [activeTab, setActiveTab] = useState<string>("All");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const launchesToShow = activeTab === "All" ? paginatedLaunches : favorites;
+  const filteredLaunches = (activeTab === "All" ? launches : favorites).filter(
+    (launch) =>
+      launch.mission_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const displayedLaunchesCount =
-    activeTab === "All" ? launches.length : launchesToShow.length;
+  console.log({ filteredLaunches });
 
-  console.log({
-    launchesToShow,
-  });
+  const displayedLaunchesCount = filteredLaunches.length;
+
+  const isFiltering = searchTerm !== "";
 
   return (
     <>
       <Header activeTab={activeTab} onTabChange={setActiveTab} />
       <main>
         <div className="container mx-auto pt-5">
-          <SearchBar />
-          <div>Total: {displayedLaunchesCount}</div>
+          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <div>
+            {isFiltering ? "Search results: " : "Total: "}
+            {displayedLaunchesCount}
+          </div>
           <LaunchList
-            launchesToShow={launchesToShow}
+            launchesToShow={filteredLaunches}
             isLoading={isLoading}
             favorites={favorites}
             addFavorite={addFavorite}
@@ -46,7 +51,7 @@ export default function Home() {
             totalPages={totalPages}
             setCurrentPage={setCurrentPage}
           />
-          {activeTab === "All" && (
+          {activeTab === "All" && !isFiltering && (
             <Paginator
               currentPage={currentPage}
               totalPages={totalPages}
