@@ -1,3 +1,17 @@
+export interface LaunchesContextProps {
+  launches: Launch[];
+  paginatedLaunches: Launch[];
+  setLaunches: React.Dispatch<React.SetStateAction<Launch[]>>;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  totalPages: number;
+  isLoading: boolean;
+  favorites: Launch[];
+  setFavorites: React.Dispatch<React.SetStateAction<Launch[]>>;
+  addFavorite: (launch: Launch) => void;
+  removeFavorite: (flightNumber: number) => void;
+}
+
 export interface Launch {
   flight_number: number;
   mission_name: string;

@@ -93,7 +93,7 @@ const Paginator: React.FC<PaginatorProps> = ({
   };
 
   return (
-    <div className="paginator flex justify-center items-center mt-4">
+    <div className="paginator flex justify-end items-center my-12">
       <button
         onClick={handlePrevious}
         disabled={currentPage === 1}
