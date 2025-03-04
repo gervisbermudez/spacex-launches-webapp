@@ -10,6 +10,7 @@ import { fetchLaunches } from "@/utils/fetchLaunches";
 
 interface LaunchesContextProps {
   launches: Launch[];
+  paginatedLaunches: Launch[];
   setLaunches: React.Dispatch<React.SetStateAction<Launch[]>>;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
@@ -32,29 +33,42 @@ export const LaunchesProvider = ({ children }: { children: ReactNode }) => {
   const [launches, setLaunches] = useState<Launch[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [paginatedLaunches, setPaginatedLaunches] = useState<Launch[]>([]);
+
+  const launchesPerPage = 9;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchLaunches({
-          limit: 5,
           sort: "flight_number",
-          order: "desc",
-          page: currentPage,
+          order: "asc",
         });
         setLaunches(data.launches);
-        setTotalPages(data.totalPages);
+        setTotalPages(Math.ceil(data.launches.length / launchesPerPage));
       } catch (error) {
         console.error("Failed to fetch launches", error);
       }
     };
 
     fetchData();
-  }, [currentPage]);
+  }, []);
+
+  useEffect(() => {
+    const offset = (currentPage - 1) * launchesPerPage;
+    setPaginatedLaunches(launches.slice(offset, offset + launchesPerPage));
+  }, [launches, currentPage]);
 
   return (
     <LaunchesContext.Provider
-      value={{ launches, setLaunches, currentPage, setCurrentPage, totalPages }}
+      value={{
+        launches,
+        paginatedLaunches,
+        setLaunches,
+        currentPage,
+        setCurrentPage,
+        totalPages,
+      }}
     >
       {children}
     </LaunchesContext.Provider>

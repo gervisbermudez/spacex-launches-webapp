@@ -5,10 +5,10 @@ import Tabs from "@/components/Tabs/Tabs";
 import LaunchCard from "@/components/LaunchCard/LaunchCard";
 import Paginator from "@/components/Paginator/Paginator";
 import { useLaunches } from "@/context/LaunchesContext";
-import { fetchLaunches } from "@/utils/fetchLaunches";
 
 export default function Home() {
-  const { launches, currentPage, setCurrentPage, totalPages } = useLaunches();
+  const { paginatedLaunches, currentPage, setCurrentPage, totalPages } =
+    useLaunches();
 
   return (
     <>
@@ -42,7 +42,7 @@ export default function Home() {
         </div>
         <section className="container mx-auto">
           <div className="launches-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-            {launches.map((launch) => (
+            {paginatedLaunches.map((launch) => (
               <LaunchCard key={launch.flight_number} launch={launch} />
             ))}
           </div>

@@ -7,8 +7,6 @@ interface LaunchCardProps {
 }
 
 export default function LaunchCard({ launch }: LaunchCardProps) {
-  console.log(launch);
-
   const launchImage =
     launch.links.flickr_images && launch.links.flickr_images.length > 0
       ? launch.links.flickr_images[0]
@@ -25,7 +23,7 @@ export default function LaunchCard({ launch }: LaunchCardProps) {
       </div>
       <div className="launch-card-content p-4">
         <h3 className="launch-card-title text-xl font-semibold">
-          {launch.flight_number} - {launch.rocket.rocket_name}
+          {launch.rocket.rocket_name}
         </h3>
         <p className="launch-card-description text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap max-h-12">
           {launch.details}
