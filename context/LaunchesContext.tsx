@@ -9,7 +9,7 @@ import { Launch } from "@/types";
 import { fetchLaunches } from "@/utils/fetchLaunches";
 import config from "@/config/config";
 
-interface LaunchesContextProps {
+export interface LaunchesContextProps {
   launches: Launch[];
   paginatedLaunches: Launch[];
   setLaunches: React.Dispatch<React.SetStateAction<Launch[]>>;
@@ -17,6 +17,10 @@ interface LaunchesContextProps {
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   totalPages: number;
   isLoading: boolean;
+  favorites: Launch[];
+  setFavorites: React.Dispatch<React.SetStateAction<Launch[]>>;
+  addFavorite: (launch: Launch) => void;
+  removeFavorite: (flightNumber: number) => void;
 }
 
 const LaunchesContext = createContext<LaunchesContextProps | undefined>(
@@ -37,6 +41,7 @@ export const LaunchesProvider = ({ children }: { children: ReactNode }) => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [paginatedLaunches, setPaginatedLaunches] = useState<Launch[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [favorites, setFavorites] = useState<Launch[]>([]);
 
   const launchesPerPage = config.LAUNCHES_PER_PAGE;
 
@@ -45,7 +50,7 @@ export const LaunchesProvider = ({ children }: { children: ReactNode }) => {
       try {
         const data = await fetchLaunches({
           sort: "flight_number",
-          order: "asc",
+          order: "desc",
         });
         setLaunches(data.launches);
         setTotalPages(Math.ceil(data.launches.length / launchesPerPage));
@@ -57,12 +62,31 @@ export const LaunchesProvider = ({ children }: { children: ReactNode }) => {
     };
 
     fetchData();
+
+    const storedFavorites = localStorage.getItem("favorites");
+    if (storedFavorites) {
+      setFavorites(JSON.parse(storedFavorites));
+    }
   }, []);
 
   useEffect(() => {
     const offset = (currentPage - 1) * launchesPerPage;
     setPaginatedLaunches(launches.slice(offset, offset + launchesPerPage));
   }, [launches, currentPage]);
+
+  const addFavorite = (launch: Launch) => {
+    const updatedFavorites = [...favorites, launch];
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+  };
+
+  const removeFavorite = (flightNumber: number) => {
+    const updatedFavorites = favorites.filter(
+      (launch) => launch.flight_number !== flightNumber
+    );
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+  };
 
   return (
     <LaunchesContext.Provider
@@ -74,6 +98,10 @@ export const LaunchesProvider = ({ children }: { children: ReactNode }) => {
         setCurrentPage,
         totalPages,
         isLoading,
+        favorites,
+        setFavorites,
+        addFavorite,
+        removeFavorite,
       }}
     >
       {children}

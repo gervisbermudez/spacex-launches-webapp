@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 
 interface TabsProps {
-  onClick: (tab: string) => void;
+  activeTab: string;
+  onTabChange: (tab: string) => void;
 }
 
-export default function Tabs({ onClick }: TabsProps) {
-  const [activeTab, setActiveTab] = useState("All");
-
+export default function Tabs({ activeTab, onTabChange }: TabsProps) {
   const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-    onClick(tab);
+    onTabChange(tab);
+    onTabChange(tab);
   };
 
   const getButtonClasses = (tab: string) => {

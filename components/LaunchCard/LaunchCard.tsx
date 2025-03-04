@@ -5,32 +5,23 @@ import config from "@/config/config";
 
 interface LaunchCardProps {
   launch: Launch;
+  onAddFavorite: (launch: Launch) => void;
+  onRemoveFavorite: (flightNumber: number) => void;
+  isFavorite: boolean;
 }
 
-export default function LaunchCard({ launch }: LaunchCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    setIsFavorite(
-      favorites.some(
-        (fav: Launch) => fav.flight_number === launch.flight_number
-      )
-    );
-  }, [launch.flight_number]);
-
+export default function LaunchCard({
+  launch,
+  onAddFavorite,
+  onRemoveFavorite,
+  isFavorite,
+}: LaunchCardProps) {
   const handleFavoriteClick = () => {
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
     if (isFavorite) {
-      const updatedFavorites = favorites.filter(
-        (fav: Launch) => fav.flight_number !== launch.flight_number
-      );
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      onRemoveFavorite(launch.flight_number);
     } else {
-      favorites.push(launch);
-      localStorage.setItem("favorites", JSON.stringify(favorites));
+      onAddFavorite(launch);
     }
-    setIsFavorite(!isFavorite);
   };
 
   const launchImage =

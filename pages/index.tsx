@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import Logo from "@/assets/images/Logo";
 import SearchIcon from "@/assets/images/SearchIcon";
 import Tabs from "@/components/Tabs/Tabs";
@@ -14,7 +14,21 @@ export default function Home() {
     setCurrentPage,
     totalPages,
     isLoading,
+    favorites,
+    addFavorite,
+    removeFavorite,
+    launches,
   } = useLaunches();
+  const [activeTab, setActiveTab] = useState<string>("All");
+
+  const launchesToShow = activeTab === "All" ? paginatedLaunches : favorites;
+
+  const displayedLaunchesCount =
+    activeTab === "All" ? launches.length : launchesToShow.length;
+
+  console.log({
+    launchesToShow,
+  });
 
   return (
     <>
@@ -27,11 +41,7 @@ export default function Home() {
             <div className="main-title mt-7">
               <h2 className="text-4xl tracking-wider">Launches</h2>
             </div>
-            <Tabs
-              onClick={function (tab: string): void {
-                // throw new Error("Function not implemented.");
-              }}
-            />
+            <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
         </div>
       </header>
@@ -47,6 +57,7 @@ export default function Home() {
               className="search-input w-full h-12 px-4 border-0 rounded-lg pl-10 bg-app-surface"
             />
           </div>
+          <div>Total: {displayedLaunchesCount}</div>
           <section className="mx-auto">
             {isLoading ? (
               <div className="flex justify-center items-center h-64">
@@ -55,15 +66,25 @@ export default function Home() {
             ) : (
               <>
                 <div className="launches-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-                  {paginatedLaunches.map((launch) => (
-                    <LaunchCard key={launch.flight_number} launch={launch} />
+                  {launchesToShow.map((launch) => (
+                    <LaunchCard
+                      key={launch.flight_number + launch.launch_date_unix}
+                      launch={launch}
+                      onAddFavorite={addFavorite}
+                      onRemoveFavorite={removeFavorite}
+                      isFavorite={favorites.some(
+                        (fav) => fav.flight_number === launch.flight_number
+                      )}
+                    />
                   ))}
                 </div>
-                <Paginator
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                />
+                {activeTab === "All" && (
+                  <Paginator
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                )}
               </>
             )}
           </section>
