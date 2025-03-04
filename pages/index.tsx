@@ -15,33 +15,37 @@ export default function Home() {
     addFavorite,
     removeFavorite,
     launches,
+    paginatedLaunches,
   } = useLaunches();
   const [activeTab, setActiveTab] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const filteredLaunches = (activeTab === "All" ? launches : favorites).filter(
-    (launch) =>
-      launch.mission_name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredLaunches = launches.filter((launch) =>
+    launch.mission_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  console.log({ filteredLaunches });
-
-  const displayedLaunchesCount = filteredLaunches.length;
-
   const isFiltering = searchTerm !== "";
+
+  const launchesToShow = isFiltering
+    ? filteredLaunches
+    : activeTab === "All"
+    ? paginatedLaunches
+    : favorites;
+
+  const displayedLaunchesCount = launchesToShow.length;
 
   return (
     <>
       <Header activeTab={activeTab} onTabChange={setActiveTab} />
       <main>
-        <div className="container mx-auto pt-5">
+        <div className="container mx-auto py-5">
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           <div>
             {isFiltering ? "Search results: " : "Total: "}
             {displayedLaunchesCount}
           </div>
           <LaunchList
-            launchesToShow={filteredLaunches}
+            launchesToShow={launchesToShow}
             isLoading={isLoading}
             favorites={favorites}
             addFavorite={addFavorite}
