@@ -39,7 +39,7 @@ export default function LaunchCard({ launch }: LaunchCardProps) {
       : config.DEFAULT_LAUNCH_IMAGE;
 
   return (
-    <div className="launch-card bg-app-surface rounded-lg shadow-lg max-w-[413px]">
+    <div className="launch-card bg-app-surface rounded-lg shadow-lg max-w-[413px] w-full">
       <div className="launch-card-image">
         <img
           src={launchImage}

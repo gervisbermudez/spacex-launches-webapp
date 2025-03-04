@@ -30,6 +30,22 @@ module.exports = {
       backgroundImage: {
         "app-gradient": "linear-gradient(180deg, #121212 64.11%, #1E1E1E 100%)",
       },
+      container: {
+        center: true,
+        padding: "1rem",
+        screens: {
+          sm: "100%",
+          md: "100%",
+          lg: "100%",
+          xl: "100%",
+          "2xl": "1440px",
+        },
+      },
+    },
+    screens: {
+      sm: "360px",
+      md: "768px",
+      lg: "1440px",
     },
     plugins: [],
   },

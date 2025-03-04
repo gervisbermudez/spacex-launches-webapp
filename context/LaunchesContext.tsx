@@ -16,6 +16,7 @@ interface LaunchesContextProps {
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   totalPages: number;
+  isLoading: boolean;
 }
 
 const LaunchesContext = createContext<LaunchesContextProps | undefined>(
@@ -35,6 +36,7 @@ export const LaunchesProvider = ({ children }: { children: ReactNode }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [paginatedLaunches, setPaginatedLaunches] = useState<Launch[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const launchesPerPage = config.LAUNCHES_PER_PAGE;
 
@@ -49,6 +51,8 @@ export const LaunchesProvider = ({ children }: { children: ReactNode }) => {
         setTotalPages(Math.ceil(data.launches.length / launchesPerPage));
       } catch (error) {
         console.error("Failed to fetch launches", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -69,6 +73,7 @@ export const LaunchesProvider = ({ children }: { children: ReactNode }) => {
         currentPage,
         setCurrentPage,
         totalPages,
+        isLoading,
       }}
     >
       {children}

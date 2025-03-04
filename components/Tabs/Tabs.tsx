@@ -22,7 +22,7 @@ export default function Tabs({ onClick }: TabsProps) {
   };
 
   return (
-    <section className="tabs-container container">
+    <section className="tabs-container">
       <div className="tabs flex">
         <button
           className={getButtonClasses("All")}
