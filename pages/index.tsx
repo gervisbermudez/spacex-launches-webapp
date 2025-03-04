@@ -4,6 +4,7 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import LaunchList from "@/components/LaunchList/LaunchList";
 import { useLaunches } from "@/context/LaunchesContext";
 import Paginator from "@/components/Paginator/Paginator";
+import { Launch } from "@/types";
 
 export default function Home() {
   const {
@@ -20,19 +21,30 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const filteredLaunches = launches.filter((launch) =>
-    launch.mission_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filterLaunches = (launches: Launch[]) =>
+    launches.filter((launch) =>
+      launch.mission_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   const isFiltering = searchTerm !== "";
 
   const launchesToShow = isFiltering
-    ? filteredLaunches
+    ? activeTab === "All"
+      ? filterLaunches(launches)
+      : filterLaunches(favorites)
     : activeTab === "All"
     ? paginatedLaunches
     : favorites;
 
   const displayedLaunchesCount = launchesToShow.length;
+  const totalLaunchesCount = launches.length;
+  const totalFavoritesCount = favorites.length;
+
+  const totalDisplayedLaunches = isFiltering
+    ? displayedLaunchesCount
+    : activeTab === "All"
+    ? totalLaunchesCount
+    : totalFavoritesCount;
 
   return (
     <>
@@ -42,7 +54,7 @@ export default function Home() {
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           <div>
             {isFiltering ? "Search results: " : "Total: "}
-            {displayedLaunchesCount}
+            {totalDisplayedLaunches}
           </div>
           <LaunchList
             launchesToShow={launchesToShow}
