@@ -1,16 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Launch } from "@/types";
 import StarIcon from "@/assets/images/StarIcon";
+import config from "@/config/config";
 
 interface LaunchCardProps {
   launch: Launch;
 }
 
 export default function LaunchCard({ launch }: LaunchCardProps) {
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    setIsFavorite(
+      favorites.some(
+        (fav: Launch) => fav.flight_number === launch.flight_number
+      )
+    );
+  }, [launch.flight_number]);
+
+  const handleFavoriteClick = () => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    if (isFavorite) {
+      const updatedFavorites = favorites.filter(
+        (fav: Launch) => fav.flight_number !== launch.flight_number
+      );
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    } else {
+      favorites.push(launch);
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }
+    setIsFavorite(!isFavorite);
+  };
+
   const launchImage =
     launch.links.flickr_images && launch.links.flickr_images.length > 0
       ? launch.links.flickr_images[0]
-      : "https://images.unsplash.com/photo-1517976487492-5750f3195933?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+      : config.DEFAULT_LAUNCH_IMAGE;
 
   return (
     <div className="launch-card bg-app-surface rounded-lg shadow-lg max-w-[413px]">
@@ -32,8 +58,8 @@ export default function LaunchCard({ launch }: LaunchCardProps) {
           <span className="launch-card-date text-gray-400">
             {new Date(launch.launch_date_utc).toLocaleDateString()}
           </span>
-          <button className="favorite-icon">
-            <StarIcon />
+          <button className="favorite-icon" onClick={handleFavoriteClick}>
+            <StarIcon isActive={isFavorite} />
           </button>
         </div>
       </div>

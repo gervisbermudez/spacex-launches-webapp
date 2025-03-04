@@ -1,3 +1,4 @@
+import config from "@/config/config";
 import { Launch } from "@/types";
 
 interface FetchLaunchesOptions {
@@ -26,7 +27,7 @@ export const fetchLaunches = async (
   if (order !== undefined) queryParams.append("order", order);
 
   const queryString = queryParams.toString();
-  const url = `https://api.spacexdata.com/v3/launches${
+  const url = `${config.API_URL}/launches${
     queryString ? `?${queryString}` : ""
   }`;
 

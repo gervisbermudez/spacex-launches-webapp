@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { Launch } from "@/types";
 import { fetchLaunches } from "@/utils/fetchLaunches";
+import config from "@/config/config";
 
 interface LaunchesContextProps {
   launches: Launch[];
@@ -35,7 +36,7 @@ export const LaunchesProvider = ({ children }: { children: ReactNode }) => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [paginatedLaunches, setPaginatedLaunches] = useState<Launch[]>([]);
 
-  const launchesPerPage = 9;
+  const launchesPerPage = config.LAUNCHES_PER_PAGE;
 
   useEffect(() => {
     const fetchData = async () => {
