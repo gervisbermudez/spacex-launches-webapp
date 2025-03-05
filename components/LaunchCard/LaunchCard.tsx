@@ -48,7 +48,7 @@ export default function LaunchCard({
             href={`/detail/${missionSlug}-${launch.flight_number}`}
             className="text-blue-500 hover:underline"
           >
-            {launch.rocket.rocket_name}
+            {launch.mission_name}
           </Link>
         </h3>
         <p className="launch-card-description text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap max-h-12">

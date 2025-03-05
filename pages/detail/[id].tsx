@@ -8,19 +8,25 @@ import { generateSlug } from "@/utils/stringUtils";
 import config from "@/config/config";
 import Spinner from "@/components/Spinner/Spinner";
 
-export default function Page(props: any) {
-  const router = useRouter();
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+export default function Page() {
+  const {
+    query: { id },
+  } = useRouter();
   const { launches, isLoading, addFavorite, removeFavorite, favorites } =
     useLaunches();
-  const { id } = router.query;
-  console.log({ props });
 
   const launch = launches.find(
     (launch) =>
       `${generateSlug(launch.mission_name)}-${launch.flight_number}` === id
   );
-
-  console.log({ launch });
 
   if (isLoading) {
     return (
@@ -30,43 +36,22 @@ export default function Page(props: any) {
     );
   }
 
-  if (!launch && !isLoading) {
+  if (!launch) {
     return <div>Launch not found</div>;
   }
 
-  const launchDate = launch
-    ? new Date(launch.launch_date_utc).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "Unknown date";
-
-  const launchName = launch ? launch.mission_name : "Unknown mission";
-  const launchDescription = launch
-    ? launch.details || "No description available."
-    : "No description available.";
+  const launchDate = formatDate(launch.launch_date_utc);
+  const launchName = launch.mission_name;
+  const launchDescription = launch.details || "No description available.";
   const launchImage =
-    launch &&
-    launch.links.flickr_images &&
-    launch.links.flickr_images.length > 0
-      ? launch.links.flickr_images[0]
-      : config.DEFAULT_LAUNCH_IMAGE;
+    launch.links.flickr_images?.[0] || config.DEFAULT_LAUNCH_IMAGE;
 
   const isFavorite = favorites.some(
-    (fav) => fav.flight_number === launch?.flight_number
+    (fav) => fav.flight_number === launch.flight_number
   );
 
-  const handleAddFavorite = () => {
-    if (launch) {
-      addFavorite(launch);
-    }
-  };
-  const handleRemoveFavorite = () => {
-    if (launch) {
-      removeFavorite(launch.flight_number);
-    }
-  };
+  const handleAddFavorite = () => addFavorite(launch);
+  const handleRemoveFavorite = () => removeFavorite(launch.flight_number);
 
   return (
     <>
