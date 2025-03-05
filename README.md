@@ -1,4 +1,36 @@
+# SpaceX Launches Web App
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Description
+
+This application allows users to view the latest SpaceX launches and add them to a "favorites" list to revisit later. It is part of a technical interview exercise.
+
+## Features
+
+1. Fetch endpoints and merge arrays (populate launch data with rocket data).
+2. Display launches.
+3. Favorite functionality (persist them in local storage).
+4. Search by mission name.
+5. Inspect specific launch details.
+6. Pagination.
+
+## API Endpoints
+
+The application uses the following SpaceX API endpoints:
+
+- [https://api.spacexdata.com/v3/rockets](https://api.spacexdata.com/v3/rockets)
+- [https://api.spacexdata.com/v3/launches](https://api.spacexdata.com/v3/launches)
+
+More information about API usage can be found here: [SpaceX API Documentation](https://docs.spacexdata.com).
+
+## Technologies Used
+
+- **Next.js**: React framework for web applications.
+- **React**: JavaScript library for building user interfaces.
+- **Tailwind CSS**: CSS framework for rapid and responsive design.
+- **ESLint**: Tool for identifying and reporting on patterns in JavaScript code.
+- **Local Storage**: To persist the favorites list.
 
 ## Getting Started
 
