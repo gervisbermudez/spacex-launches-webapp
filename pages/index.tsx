@@ -18,6 +18,11 @@ export default function Home() {
     launches,
     paginatedLaunches,
   } = useLaunches();
+
+  console.log({
+    launches,
+  });
+
   const [activeTab, setActiveTab] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState<string>("");
 

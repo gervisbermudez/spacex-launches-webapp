@@ -3,6 +3,7 @@ import { Launch } from "@/types";
 import StarIcon from "@/components/Icons/StarIcon";
 import config from "@/config/config";
 import Link from "next/link";
+import { generateSlug } from "@/utils/stringUtils";
 
 interface LaunchCardProps {
   launch: Launch;
@@ -30,6 +31,8 @@ export default function LaunchCard({
       ? launch.links.flickr_images[0]
       : config.DEFAULT_LAUNCH_IMAGE;
 
+  const missionSlug = generateSlug(launch.mission_name);
+
   return (
     <div className="launch-card bg-app-surface rounded-lg shadow-lg max-w-[413px] w-full">
       <div className="launch-card-image">
@@ -42,7 +45,7 @@ export default function LaunchCard({
       <div className="launch-card-content p-4">
         <h3 className="launch-card-title text-xl font-semibold">
           <Link
-            href={`/detail/${launch.flight_number}`}
+            href={`/detail/${missionSlug}-${launch.flight_number}`}
             className="text-blue-500 hover:underline"
           >
             {launch.rocket.rocket_name}
