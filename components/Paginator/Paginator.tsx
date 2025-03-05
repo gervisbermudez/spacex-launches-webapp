@@ -99,7 +99,22 @@ const Paginator: React.FC<PaginatorProps> = ({
         disabled={currentPage === 1}
         className="px-4 py-2 mx-2 bg-gray-300 rounded disabled:opacity-50"
       >
-        &lt; Previa
+        <svg
+          width={7}
+          height={12}
+          viewBox="0 0 7 12"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6.00005 1L1.7998 6L6.00005 11"
+            stroke="white"
+            strokeOpacity="0.27"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </button>
       {renderPageNumbers()}
       <button
@@ -107,7 +122,22 @@ const Paginator: React.FC<PaginatorProps> = ({
         disabled={currentPage === totalPages}
         className="px-4 py-2 mx-2 bg-gray-300 rounded disabled:opacity-50"
       >
-        Siguiente &gt;
+        <svg
+          width={7}
+          height={12}
+          viewBox="0 0 7 12"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0.999951 1L5.2002 6L0.99995 11"
+            stroke="white"
+            strokeOpacity="0.87"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </button>
     </div>
   );
