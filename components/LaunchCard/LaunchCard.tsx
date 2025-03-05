@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Launch } from "@/types";
-import StarIcon from "@/assets/images/StarIcon";
+import StarIcon from "@/components/Icons/StarIcon";
 import config from "@/config/config";
+import Link from "next/link";
 
 interface LaunchCardProps {
   launch: Launch;
@@ -40,7 +41,12 @@ export default function LaunchCard({
       </div>
       <div className="launch-card-content p-4">
         <h3 className="launch-card-title text-xl font-semibold">
-          {launch.rocket.rocket_name}
+          <Link
+            href={`/detail/${launch.flight_number}`}
+            className="text-blue-500 hover:underline"
+          >
+            {launch.rocket.rocket_name}
+          </Link>
         </h3>
         <p className="launch-card-description text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap max-h-12">
           {launch.details}

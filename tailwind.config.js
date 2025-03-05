@@ -29,6 +29,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         "app-gradient": "linear-gradient(180deg, #121212 64.11%, #1E1E1E 100%)",
+        "detail-gradient": "linear-gradient(0deg, #00000075, #ffffff26)",
       },
       container: {
         center: true,

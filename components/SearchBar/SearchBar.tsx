@@ -1,6 +1,6 @@
 import React from "react";
-import SearchIcon from "@/assets/images/SearchIcon";
-import ClearIcon from "@/assets/images/ClearIcon";
+import SearchIcon from "@/components/Icons/SearchIcon";
+import ClearIcon from "@/components/Icons/ClearIcon";
 
 interface SearchBarProps {
   searchTerm: string;
